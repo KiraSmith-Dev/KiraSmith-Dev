@@ -1,0 +1,30 @@
+name: 'Build and Test'
+description: 'Builds and tests the project'
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+
+    - name: Install packages
+      shell: bash
+      run: npm ci
+      
+    - name: Build
+      shell: bash
+      run: npm run build
+      
+    - name: Test
+      shell: bash
+      run: npm run test --if-present

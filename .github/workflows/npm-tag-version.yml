@@ -1,0 +1,38 @@
+name: Check and Tag New Versions
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+
+jobs:
+  check-and-tag:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Build Test # We don't really want to tag a release if the build/test fails
+        uses: ./.github/actions/checkout-build-test
+        with:
+          node-version: ${{ github.event.inputs.node-version }}
+        
+      - name: Get latest tag
+        run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> "$GITHUB_ENV"
+        
+      - name: Get current version
+        run: |
+            current_version=$(npm pkg get version)
+            echo "current_npm_version=v${current_version//\\\"/"}" >> "$GITHUB_ENV"
+        
+      - name: Compare versions
+        run: echo "compare_result=$($current_npm_version == $latest_git_tag && \"true\" || \"false\")" >> "$GITHUB_ENV"
+        
+      - name: Create tag
+        if: ${{ env.compare_result == 'false' }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git tag ${{ env.current_npm_version }} $GITHUB_SHA
+          git push origin ${{ env.current_npm_version }}

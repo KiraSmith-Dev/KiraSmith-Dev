@@ -1,0 +1,38 @@
+name: 'Commit Glob'
+description: 'Stages and commits changes'
+inputs:
+  glob:
+    description: 'Glob pattern of files to stage'
+    required: true
+  message:
+    description: 'Commit message'
+    required: true
+  force:
+    description: 'Force add files (ignore .gitignore)'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+  - name: Stage changes
+    shell: bash
+    run: |
+      git config --global user.name "github-actions"
+      git config --global user.email "github-actions@github.com"
+      git add ${{ inputs.force == 'true' && '--force ' || '' }}"${{ inputs.glob }}"
+
+  - name: Check for staged changes
+    shell: bash
+    run: |
+      set +e
+      git diff --cached --quiet
+      echo "any_changes=$?" >> "$GITHUB_ENV"
+
+  - name: Commit files
+    shell: bash
+    if: ${{ env.any_changes == 1 }}
+    run: |
+      git commit -m "${{ inputs.message }}"
+      git push
+

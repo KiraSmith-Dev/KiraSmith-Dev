@@ -1,0 +1,34 @@
+
+name: Build Test Commit
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+      output-glob:
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.action }}-${{ github.event.inputs.node-version }}-${{ github.event.inputs.output-glob }}
+
+jobs:
+  build-test-commit:
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build and Test
+      uses: ./.github/actions/checkout-build-test
+      with:
+        node-version: ${{ github.event.inputs.node-version }}
+        
+    - name: Commit build
+      uses: ./.github/actions/commit-glob
+      with:
+        glob: ${{ github.event.inputs.output-glob }}
+        message: 'Chore: Automatic build'
+        force: true

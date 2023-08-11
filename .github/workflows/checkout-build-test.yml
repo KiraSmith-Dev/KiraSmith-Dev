@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+
+jobs:
+    build:
+        permissions:
+          contents: read
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout Build Test
+          uses: ./.github/actions/checkout-build-test
+          with:
+            node-version: ${{ inputs.node-version }}

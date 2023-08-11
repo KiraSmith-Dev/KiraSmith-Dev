@@ -1,0 +1,45 @@
+on:
+  workflow_call:
+    inputs:
+      new-version:
+        description: 'New version ex: 1.0.0'
+        type: string
+        required: false
+      node-version:
+        description: 'Node.js version ex: 16.x'
+        type: string
+        required: false
+        default: '16.x'
+
+jobs:
+  bump-version:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install Node.js ${{ inputs.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: 'npm'
+        
+      - name: Get current version
+        if: ${{ github.event.inputs.new-version == '' }}
+        run: echo "tag_version=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> $GITHUB_ENV
+      
+      - name: Use version from input
+        if: ${{ github.event.inputs.new-version != '' }}
+        run: echo "tag_version=$new_version" >> $GITHUB_ENV
+        env:
+          new_version: ${{ github.event.inputs.new-version }}
+        
+      - run: npm version "$tag_version" --no-git-tag-version --allow-same-version
+      
+      - name: Commit version change
+        uses: ./.github/actions/commit-glob
+        with:
+          glob: package*.json
+          message: "Chore: Bump version to ${{ inputs.new-version }}"

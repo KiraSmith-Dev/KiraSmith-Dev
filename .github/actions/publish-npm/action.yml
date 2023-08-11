@@ -1,0 +1,24 @@
+name: 'Publish to NPM'
+description: 'Publishes the package to NPM registry'
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: false
+    default: '16.x'
+  NPM_TOKEN:
+    description: 'NPM token'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Publish to NPM
+      shell: bash
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.NPM_TOKEN }}
