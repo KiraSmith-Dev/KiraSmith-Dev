@@ -27,7 +27,7 @@ jobs:
             echo "current_npm_version=v${current_version//\\\"/\"}" >> "$GITHUB_ENV"
         
       - name: Compare versions
-        run: echo "compare_result=$($current_npm_version == $latest_git_tag && \"true\" || \"false\")" >> "$GITHUB_ENV"
+        run: echo "compare_result=($current_npm_version == $latest_git_tag) && \"true\" || \"false\"" >> "$GITHUB_ENV"
         
       - name: Create tag
         if: ${{ env.compare_result == 'false' }}
