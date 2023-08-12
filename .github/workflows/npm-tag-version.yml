@@ -19,7 +19,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
         
       - name: Get latest tag
-        run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> "$GITHUB_ENV"
+        run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo 'v0.0.0')" >> "$GITHUB_ENV"
         
       - name: Get current version
         run: |
@@ -27,7 +27,7 @@ jobs:
             echo "current_npm_version=v${current_version//\\\"/\"}" >> "$GITHUB_ENV"
         
       - name: Compare versions
-        run: echo "compare_result=\$(\[\[ \$current_npm_version == \$latest_git_tag \]\] && 'true' || 'false')" >> "\$GITHUB_ENV"
+        run: echo "compare_result=$(($current_npm_version == $latest_git_tag))" >> "\$GITHUB_ENV"
         
       - name: Debug log
         run: |
@@ -36,7 +36,7 @@ jobs:
           echo "${{ env.compare_result }}"
         
       - name: Create tag
-        if: ${{ env.compare_result == 'false' }}
+        if: ${{ env.compare_result == '0' }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
