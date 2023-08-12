@@ -27,14 +27,14 @@ jobs:
           cache: 'npm'
         
       - name: Get current version
-        if: ${{ github.event.inputs.new-version == '' }}
+        if: ${{ inputs.new-version == '' }}
         run: echo "tag_version=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> $GITHUB_ENV
       
       - name: Use version from input
-        if: ${{ github.event.inputs.new-version != '' }}
+        if: ${{ inputs.new-version != '' }}
         run: echo "tag_version=$new_version" >> $GITHUB_ENV
         env:
-          new_version: ${{ github.event.inputs.new-version }}
+          new_version: ${{ inputs.new-version }}
         
       - run: npm version "$tag_version" --no-git-tag-version --allow-same-version
       

@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Build Test # We don't really want to tag a release if the build/test fails
         uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test@main
         with:
-          node-version: ${{ github.event.inputs.node-version }}
+          node-version: ${{ inputs.node-version }}
         
       - name: Get latest tag
         run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> "$GITHUB_ENV"
