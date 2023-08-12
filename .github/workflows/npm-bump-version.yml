@@ -39,7 +39,7 @@ jobs:
       - run: npm version "$tag_version" --no-git-tag-version --allow-same-version
       
       - name: Commit version change
-        uses: ./.github/actions/commit-glob
+        uses: int3nse-git/int3nse-git/.github/actions/commit-glob
         with:
           glob: package*.json
           message: "Chore: Bump version to ${{ inputs.new-version }}"
