@@ -29,7 +29,7 @@ jobs:
             echo $current_npm_version
         
       - name: Compare versions
-        run: echo "compare_result=$((\"$current_npm_version\" == \"$latest_git_tag\"))" >> "\$GITHUB_ENV"
+        run: echo "compare_result=\$( [ \"$current_npm_version\" == \"$latest_git_tag\" ] && echo true || echo false )" >> "\$GITHUB_ENV"
         
       - name: Debug log
         run: |
