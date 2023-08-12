@@ -28,6 +28,6 @@ jobs:
     - name: Commit build
       uses: int3nse-git/int3nse-git/.github/actions/commit-glob@main
       with:
-        glob: ${{ github.event.inputs.output-glob }}
+        glob: '${{ github.event.inputs.output-glob }}'
         message: 'Chore: Automatic build'
         force: true
