@@ -12,7 +12,7 @@ on:
         type: string
 
 concurrency:
-  group: ${{ github.action }}-${{ github.event.inputs.node-version }}-${{ github.event.inputs.output-glob }}
+  group: ${{ github.action }}-${{ inputs.node-version }}-${{ inputs.output-glob }}
 
 jobs:
   build-test-commit:
@@ -23,11 +23,11 @@ jobs:
     - name: Build and Test
       uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test@main
       with:
-        node-version: ${{ github.event.inputs.node-version }}
+        node-version: ${{ inputs.node-version }}
         
     - name: Commit build
       uses: int3nse-git/int3nse-git/.github/actions/commit-glob@main
       with:
-        glob: '${{ github.event.inputs.output-glob }}'
+        glob: ${{ inputs.output-glob }}
         message: 'Chore: Automatic build'
         force: true
