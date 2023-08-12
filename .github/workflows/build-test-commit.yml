@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Build and Test
-      uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test
+      uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test@main
       with:
         node-version: ${{ github.event.inputs.node-version }}
         
     - name: Commit build
-      uses: int3nse-git/int3nse-git/.github/actions/commit-glob
+      uses: int3nse-git/int3nse-git/.github/actions/commit-glob@main
       with:
         glob: ${{ github.event.inputs.output-glob }}
         message: 'Chore: Automatic build'

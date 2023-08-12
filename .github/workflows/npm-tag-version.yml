@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Build Test # We don't really want to tag a release if the build/test fails
-        uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test
+        uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test@main
         with:
           node-version: ${{ github.event.inputs.node-version }}
         
