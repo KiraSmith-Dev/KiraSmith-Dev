@@ -3,7 +3,8 @@ description: 'Builds and tests the project'
 inputs:
   node-version:
     description: 'Node.js version'
-    required: true
+    required: false
+    default: '16.x'
   fetch-depth:
     description: 'Number of commits to fetch'
     required: false

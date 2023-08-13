@@ -5,8 +5,9 @@ on:
   workflow_call:
     inputs:
       node-version:
-        required: true
+        required: false
         type: string
+        default: '16.x'
       output-glob:
         required: true
         type: string
