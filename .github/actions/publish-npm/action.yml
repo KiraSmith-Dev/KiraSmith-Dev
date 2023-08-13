@@ -18,8 +18,8 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         cache: 'npm'
 
-    #- name: Publish to NPM
-    #  shell: bash
-    #  run: npm publish
-    #  env:
-    #    NODE_AUTH_TOKEN: ${{ inputs.NPM_TOKEN }}
+    - name: Publish to NPM
+      shell: bash
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.NPM_TOKEN }}
