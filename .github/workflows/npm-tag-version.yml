@@ -20,7 +20,7 @@ jobs:
           fetch-depth: '0' # Need all history to see the latest tag
         
       - name: Get latest tag
-        run: echo "latest_git_tag=\$(git describe --tags --abbrev=0 2>/dev/null || echo 'v0.0.0')" >> "$GITHUB_ENV"
+        run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo 'v0.0.0')" >> "$GITHUB_ENV"
         
       - name: Get current version
         run: |
