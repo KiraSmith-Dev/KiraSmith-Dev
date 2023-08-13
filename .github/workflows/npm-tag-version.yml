@@ -39,7 +39,7 @@ jobs:
           echo "${{ env.compare_result }}"
         
       - name: Create tag
-        if: ${{ env.compare_result == '0' }}
+        if: ${{ env.compare_result == 'false' }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
