@@ -7,6 +7,9 @@ on:
         required: false
         type: string
         default: '16.x'
+      new-version:
+        required: false
+        type: string
 
 jobs:
   check-and-tag:
@@ -24,11 +27,20 @@ jobs:
         run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo 'v0.0.0')" >> "$GITHUB_ENV"
         
       - name: Get current version
+        if: ${{ inputs.new-version == '' }}
         run: |
             current_version=$(npm pkg get version)
             echo $current_version
             echo "current_npm_version=v${current_version//\"/}" >> "$GITHUB_ENV"
             echo $current_npm_version
+        
+      - name: Use version from input
+        if: ${{ inputs.new-version != '' }}
+        run: |
+          new_version=$input_version
+          echo "current_npm_version=v${new_version#v}" >> "$GITHUB_ENV"
+        env:
+          input_version: ${{ inputs.new-version }}
         
       - name: Compare versions
         run: echo "compare_result=$( [ \"$current_npm_version\" == \"$latest_git_tag\" ] && echo true || echo false )" >> "$GITHUB_ENV"
