@@ -48,3 +48,8 @@ jobs:
         with:
           glob: package*.json
           message: "Chore: Bump version to ${{ env.pretty_version }}"
+      
+      - name: Tag version
+        uses: int3nse-git/int3nse-git/.github/actions/npm-tag-version@main
+        with:
+          new-version: ${{ env.pretty_version }}

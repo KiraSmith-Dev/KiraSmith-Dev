@@ -1,0 +1,55 @@
+name: Check and Tag New Versions
+description: Adds tags for new versions
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: false
+    default: '16.x'
+  new-version:
+    description: 'Version to tag'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+      - name: Get latest tag
+        shell: bash
+        run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo 'v0.0.0')" >> "$GITHUB_ENV"
+        
+      - name: Get current version
+        shell: bash
+        if: ${{ inputs.new-version == '' }}
+        run: |
+            current_version=$(npm pkg get version)
+            echo $current_version
+            echo "current_npm_version=v${current_version//\"/}" >> "$GITHUB_ENV"
+            echo $current_npm_version
+        
+      - name: Use version from input
+        shell: bash
+        if: ${{ inputs.new-version != '' }}
+        run: |
+          new_version=$input_version
+          echo "current_npm_version=v${new_version#v}" >> "$GITHUB_ENV"
+        env:
+          input_version: ${{ inputs.new-version }}
+        
+      - name: Compare versions
+        shell: bash
+        run: echo "compare_result=$( [ \"$current_npm_version\" == \"$latest_git_tag\" ] && echo true || echo false )" >> "$GITHUB_ENV"
+        
+      - name: Debug log
+        shell: bash
+        run: |
+          echo "${{ env.current_npm_version }}"
+          echo "${{ env.latest_git_tag }}"
+          echo "${{ env.compare_result }}"
+        
+      - name: Create tag
+        if: ${{ env.compare_result == 'false' }}
+        shell: bash
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git tag ${{ env.current_npm_version }} $GITHUB_SHA
+          git push origin ${{ env.current_npm_version }}
