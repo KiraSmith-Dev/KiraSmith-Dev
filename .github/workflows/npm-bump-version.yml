@@ -30,7 +30,9 @@ jobs:
         
       - name: Get current version
         if: ${{ inputs.new-version == '' }}
-        run: echo "tag_version=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> $GITHUB_ENV
+        run: |
+          git fetch --force --tags
+          echo "tag_version=$(git describe --tags --abbrev=0 || echo '0.0.0')" >> $GITHUB_ENV
       
       - name: Use version from input
         if: ${{ inputs.new-version != '' }}

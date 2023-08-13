@@ -14,7 +14,9 @@ runs:
   steps:
       - name: Get latest tag
         shell: bash
-        run: echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo 'v0.0.0')" >> "$GITHUB_ENV"
+        run: |
+          git fetch --force --tags
+          echo "latest_git_tag=$(git describe --tags --abbrev=0 || echo 'v0.0.0')" >> "$GITHUB_ENV"
         
       - name: Get current version
         shell: bash
