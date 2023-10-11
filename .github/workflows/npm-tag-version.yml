@@ -18,12 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Build Test # We don't really want to tag a release if the build/test fails
-        uses: int3nse-git/int3nse-git/.github/actions/checkout-build-test@main
+        uses: KiraSmith-Dev/KiraSmith-Dev/.github/actions/checkout-build-test@main
         with:
           node-version: ${{ inputs.node-version }}
           fetch-depth: '0' # Need all history to see the latest tag
         
       - name: Tag version
-        uses: int3nse-git/int3nse-git/.github/actions/npm-tag-version@main
+        uses: KiraSmith-Dev/KiraSmith-Dev/.github/actions/npm-tag-version@main
         with:
           new-version: ${{ inputs.new-version }}

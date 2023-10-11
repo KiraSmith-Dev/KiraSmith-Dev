@@ -44,12 +44,12 @@ jobs:
         run: echo "pretty_version=v${tag_version#v}" >> $GITHUB_ENV
       
       - name: Commit version change
-        uses: int3nse-git/int3nse-git/.github/actions/commit-glob@main
+        uses: KiraSmith-Dev/KiraSmith-Dev/.github/actions/commit-glob@main
         with:
           glob: package*.json
           message: "Chore: Bump version to ${{ env.pretty_version }}"
       
       - name: Tag version
-        uses: int3nse-git/int3nse-git/.github/actions/npm-tag-version@main
+        uses: KiraSmith-Dev/KiraSmith-Dev/.github/actions/npm-tag-version@main
         with:
           new-version: ${{ env.pretty_version }}
