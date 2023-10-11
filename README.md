@@ -12,6 +12,6 @@
 
 ## My repos:
 
-* 📂 Quickly self host files with [upload-tool](https://github.com/int3nse-git/upload-tool)
-* 🔍 Get JS callstack information with [easy-reflect](https://github.com/int3nse-git/easy-reflect)
-* 🛠️ Create path aliases for your NodeJS project with [path-alias](https://github.com/int3nse-git/path-alias)
+* 📂 Quickly self host files with [upload-tool](https://github.com/KiraSmith-Dev/upload-tool)
+* 🔍 Get JS callstack information with [easy-reflect](https://github.com/KiraSmith-Dev/easy-reflect)
+* 🛠️ Create path aliases for your NodeJS project with [path-alias](https://github.com/KiraSmith-Dev/path-alias)
