@@ -1,4 +1,4 @@
-# int3nse-git
+# Kira Smith
 
 👋 Hello, world!
 
