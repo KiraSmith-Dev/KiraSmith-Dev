@@ -24,6 +24,6 @@ runs:
       shell: bash
       run: |
         sed -i 's+"name": ".*+"name": "@${{ github.repository }}",+gI' ./package.json
-        npm publish
+        npm publish --registry=https://npm.pkg.github.com/
       env:
         NODE_AUTH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
